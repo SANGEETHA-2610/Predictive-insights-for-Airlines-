@@ -29,6 +29,7 @@ This is a simple yet effective example of data simulation, transformation, and v
 
 DepHour (departure hour extracted from HHMM format)
 Delayed (binary label if arrival delay > 15 minutes)
+
 ✅ Saves dataset as random_flight_data.csv.
 
 ✅ Creates visualizations:
