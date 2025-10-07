@@ -24,19 +24,27 @@ This is a simple yet effective example of data simulation, transformation, and v
 🧩 Features
 
 ✅ Generates 10,000 random flight records with multiple attributes.
+
 ✅ Derives new features like:
+
 DepHour (departure hour extracted from HHMM format)
 Delayed (binary label if arrival delay > 15 minutes)
 ✅ Saves dataset as random_flight_data.csv.
+
 ✅ Creates visualizations:
+
 Arrival Delay Distribution (Histogram)
 Correlation Matrix (Heatmap)
 
 🛠️ Technologies/Libraries Used
 
 Pandas-Data manipulation and analysis
+
 NumPy-Random data generation
+
 Seaborn-Statistical visualization
+
 Matplotlib-Plot customization and display
+
 Random-Reproducible randomization
 
