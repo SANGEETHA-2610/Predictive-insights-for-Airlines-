@@ -1,0 +1,65 @@
+
+import pandas as pd
+import numpy as np
+import random
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Seed for reproducibility
+np.random.seed(42)
+random.seed(42)
+
+# Parameters
+num_samples = 10000  # Number of samples
+
+# Helper function to generate random HHMM times
+def generate_random_time():
+    hour = np.random.randint(0, 24)
+    minute = np.random.randint(0, 60)
+    return hour * 100 + minute
+
+# Generate random data
+data = {
+    'FlightNum': np.random.randint(1000, 9999, size=num_samples),  # Random flight numbers
+    'Carrier': np.random.choice(['AA', 'DL', 'UA', 'SW', 'NK'], size=num_samples),  # Random airline carriers
+    'Origin': np.random.choice(['JFK', 'LAX', 'ORD', 'ATL', 'DFW'], size=num_samples),  # Random origin airports
+    'Dest': np.random.choice(['SFO', 'MIA', 'SEA', 'BOS', 'DEN'], size=num_samples),  # Random destination airports
+    'DepTime': [generate_random_time() for _ in range(num_samples)],  # Random departure times
+    'ArrTime': [generate_random_time() for _ in range(num_samples)],  # Random arrival times
+    'AirTime': np.random.randint(30, 500, size=num_samples),  # Random airtime in minutes
+    'Distance': np.random.randint(50, 3000, size=num_samples),  # Random distance in miles
+    'ArrDelay': np.random.randint(-30, 200, size=num_samples),  # Random arrival delay in minutes
+    'DayOfWeek': np.random.choice(range(1, 8), size=num_samples),  # Random day of the week (1=Monday, 7=Sunday)
+    'Month': np.random.choice(range(1, 13), size=num_samples),  # Random month (1=January, 12=December)
+}
+
+# Create DataFrame
+df = pd.DataFrame(data)
+
+# Optional: Create 'DepHour' feature from 'DepTime' (assuming HHMM format)
+df['DepHour'] = df['DepTime'].apply(lambda x: int(str(int(x)).zfill(4)[:2]))
+
+# Optional: Create target variable 'Delayed' (1 if ArrDelay > 15 minutes, otherwise 0)
+df['Delayed'] = df['ArrDelay'].apply(lambda x: 1 if x > 15 else 0)
+
+# Display first few rows
+print(df.head())
+
+# Save DataFrame to CSV for later use
+df.to_csv('random_flight_data.csv', index=False)
+
+# Visualize distribution of delays
+plt.figure(figsize=(10, 6))
+sns.histplot(df['ArrDelay'], bins=30, kde=True)
+plt.title('Distribution of Arrival Delays')
+plt.xlabel('Arrival Delay (minutes)')
+plt.ylabel('Frequency')
+plt.show()
+
+# Check correlation matrix: Select only numeric columns
+numeric_df = df.select_dtypes(include=[np.number])
+
+plt.figure(figsize=(12, 8))
+sns.heatmap(numeric_df.corr(), annot=True, cmap='coolwarm', fmt=".2f")
+plt.title('Correlation Matrix of Numeric Features')
+plt.show()
